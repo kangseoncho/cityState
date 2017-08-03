@@ -29,6 +29,7 @@ class App extends Component {
     this.saveLocation = this.saveLocation.bind(this);
     this.inputZipCode = this.inputZipCode.bind(this);
     this.toggleDisplay = this.toggleDisplay.bind(this);
+    this.fillInputWithZipcode = this.fillInputWithZipcode.bind(this);
   }
 
   componentDidMount() {
@@ -77,18 +78,21 @@ class App extends Component {
       })
   }
 
-  //fill input field with zipcode, and bold the selected city, state
-  toggleDisplay(cityInfo) {
+  //input field's value becomes the zipcode from city & state
+  fillInputWithZipcode(cityInfo) {
     this.setState({ zipCodeInput: Object.keys(cityInfo)[0] });
+  }
 
+  //bold the selected city, state
+  toggleDisplay(cityInfo) {
     const tempZipCodeList = this.state.zipCodeList.map((cities, index) => {
 
       if (Object.keys(cities)[0] === Object.keys(cityInfo)[0]) {
-        if (cities['selected'] === true) cities['selected'] = false;
-        else cities['selected'] = true;
+        if (cities['selected'] === 'selected') cities['selected'] = 'notSelected';
+        else cities['selected'] = 'selected';
       }
-      else if (Object.keys(cities)[0] !== Object.keys(cityInfo)[0]) {
-        cities['selected'] = false;
+      else {
+        cities['selected'] = 'notSelected';
       }
 
       return cities;
@@ -99,16 +103,10 @@ class App extends Component {
 
   render() {
 
-    let style = {
-      fontWeight: 'bold'
-    }
-    let none = {
-      fontWeight: 'normal'
-    };
-
     const displayCityState = this.state.zipCodeList.map((cityInfo, index) => {
       return (
-        <div key={index} onClick={() => this.toggleDisplay(cityInfo)} style={cityInfo['selected'] ? style : none}>
+        <div key={index} onClick={() => {this.toggleDisplay(cityInfo); this.fillInputWithZipcode(cityInfo)}}
+          className={cityInfo['selected']}>
           {cityInfo[Object.keys(cityInfo)[0]]}
         </div>
       )
@@ -123,7 +121,7 @@ class App extends Component {
         </div>
 
         <div id="formDiv">
-          <input type="text" value={this.state.zipCodeInput} placeholder="zipCode" onChange={this.inputZipCode}></input>
+          <input type="text" value={this.state.zipCodeInput} placeholder="Zip Code" onChange={this.inputZipCode}></input>
           <button type='submit' onClick={() => this.saveLocation()}> enter zipcode </button>
         </div>
       </div>
