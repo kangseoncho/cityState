@@ -7,3 +7,7 @@ body {
 .selected {
   font-weight: bold;
 }
+
+.location {
+  cursor: pointer;
+}

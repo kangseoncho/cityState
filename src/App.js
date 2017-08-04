@@ -23,64 +23,35 @@ class App extends Component {
     super(props);
     this.state = {
       zipCodeList: [],
-      zipCodeInput: undefined
+      zipCodeInput: undefined,
+      url: 'https://api.zippopotam.us/us/'
     };
 
     this.saveLocation = this.saveLocation.bind(this);
     this.inputZipCode = this.inputZipCode.bind(this);
     this.toggleDisplay = this.toggleDisplay.bind(this);
     this.fillInputWithZipcode = this.fillInputWithZipcode.bind(this);
+    this.updateZipCodeList = this.updateZipCodeList.bind(this);
   }
 
   componentDidMount() {
     //load up initial item for the list
-    let tempZipCodeList = this.state.zipCodeList;
-    let newCityInfo = {};
-
-    fetch(`https://api.zippopotam.us/us/90210`)
+    fetch(this.state.url + '90210')
       .then(res => res.json())
       .then(cityData => {
-        //object with zip, city, and state. Also will house class for indicating selection
-        newCityInfo[cityData['post code']] = `${cityData.places[0]['place name']}, ${cityData.places[0]['state abbreviation']}`
-        newCityInfo['selected'] = false;
-        tempZipCodeList.push(newCityInfo);
-        this.setState({ zipCodeList: tempZipCodeList });
+        this.updateZipCodeList(cityData);
       })
   }
 
-  //remember zipcode input
-  inputZipCode(e) {
-    this.setState({ zipCodeInput: e.target.value });
-  }
-
-  //enter new location to the list of city, state if one doesn't already exist
-  saveLocation() {
+  //update list when new item is added
+  updateZipCodeList(cityData) {
     let tempZipCodeList = this.state.zipCodeList;
     let newCityInfo = {};
-
-    fetch(`https://api.zippopotam.us/us/${this.state.zipCodeInput}`)
-      .then(res => res.json())
-      .then(cityData => {
-        let alreadyInList = false;
-        //go through the list and see if same entry already exists
-        this.state.zipCodeList.map((cities) => {
-          if (Object.keys(cities)[0] === cityData['post code']) alreadyInList = true;
-        })
-
-        //since no existing entry found, add to list
-        if (alreadyInList === false) {
-          //enter new object with zip, city, and state. Also will house class for indicating selection
-          newCityInfo[cityData['post code']] = `${cityData.places[0]['place name']}, ${cityData.places[0]['state abbreviation']}`
-          tempZipCodeList.push(newCityInfo);
-          newCityInfo['selected'] = false;
-          this.setState({ zipCodeList: tempZipCodeList });
-        }
-      })
-  }
-
-  //input field's value becomes the zipcode from city & state
-  fillInputWithZipcode(cityInfo) {
-    this.setState({ zipCodeInput: Object.keys(cityInfo)[0] });
+    //object with zip, city, and state. Also will house class for indicating selection
+    newCityInfo[cityData['post code']] = `${cityData.places[0]['place name']}, ${cityData.places[0]['state abbreviation']}`
+    newCityInfo['selected'] = 'notSelected';
+    tempZipCodeList.push(newCityInfo);
+    this.setState({ zipCodeList: tempZipCodeList });
   }
 
   //bold the selected city, state
@@ -101,12 +72,41 @@ class App extends Component {
     this.setState({ zipCodeList: tempZipCodeList })
   }
 
+  //remember zipcode input
+  inputZipCode(e) {
+    this.setState({ zipCodeInput: e.target.value });
+  }
+
+  //enter new location to the list of city, state if one doesn't already exist
+  saveLocation() {
+
+    fetch(this.state.url + this.state.zipCodeInput)
+      .then(res => res.json())
+      .then(cityData => {
+        let alreadyInList = false;
+        //go through the list and see if same entry already exists
+        this.state.zipCodeList.map((cities) => {
+          if (Object.keys(cities)[0] === cityData['post code']) alreadyInList = true;
+        })
+        //since no existing entry found, add to list
+        if (alreadyInList === false) {
+          this.updateZipCodeList(cityData);
+          this.toggleDisplay(cityData);
+        }
+      })
+  }
+
+  //input field's value becomes the zipcode from city & state
+  fillInputWithZipcode(cityInfo) {
+    this.setState({ zipCodeInput: Object.keys(cityInfo)[0] });
+  }
+
   render() {
 
     const displayCityState = this.state.zipCodeList.map((cityInfo, index) => {
       return (
-        <div key={index} onClick={() => {this.toggleDisplay(cityInfo); this.fillInputWithZipcode(cityInfo)}}
-          className={cityInfo['selected']}>
+        <div key={index} onClick={() => { this.toggleDisplay(cityInfo); this.fillInputWithZipcode(cityInfo) }}
+          className={cityInfo['selected'] + ' ' + 'location'}>
           {cityInfo[Object.keys(cityInfo)[0]]}
         </div>
       )
