@@ -24,7 +24,6 @@ class App extends Component {
     this.state = {
       zipCodeList: [],
       zipCodeInput: undefined,
-      url: 'https://api.zippopotam.us/us/'
     };
 
     this.saveLocation = this.saveLocation.bind(this);
@@ -36,7 +35,7 @@ class App extends Component {
 
   componentDidMount() {
     //load up initial item for the list
-    fetch(this.state.url + '90210')
+    fetch('https://api.zippopotam.us/us/90210')
       .then(res => res.json())
       .then(cityData => {
         this.updateZipCodeList(cityData);
@@ -80,7 +79,7 @@ class App extends Component {
   //enter new location to the list of city, state if one doesn't already exist
   saveLocation() {
 
-    fetch(this.state.url + this.state.zipCodeInput)
+    fetch(`https://api.zippopotam.us/us/${this.state.zipCodeInput}`)
       .then(res => res.json())
       .then(cityData => {
         let alreadyInList = false;
