@@ -35,6 +35,7 @@ class App extends Component {
     this.checkDuplicateZipCode = this.checkDuplicateZipCode.bind(this);
     this.updateZipCodeInput = this.updateZipCodeInput.bind(this);
     this.highlightCityState = this.highlightCityState.bind(this);
+    this.removeCityState = this.removeCityState.bind(this);
   }
 
   updateZipCodeInput(event) {
@@ -97,7 +98,17 @@ class App extends Component {
       return zipCodeItem;
     })
 
-    this.setState({ zipCodeList: tempZipCodeList })
+    this.setState({ zipCodeList: tempZipCodeList, zipCodeInput: zipCode })
+  }
+
+  removeCityState(zipCode) {
+    let tempZipCodeList = this.state.zipCodeList;
+
+    tempZipCodeList = tempZipCodeList.filter((zipCodeItem) => {
+      return Object.keys(zipCodeItem)[0] !== zipCode;
+    })
+
+    this.setState({ zipCodeList:tempZipCodeList })
   }
 
   render() {
@@ -110,6 +121,7 @@ class App extends Component {
           zipCodeInput={this.state.zipCodeInput}
           updateZipCodeInput={this.updateZipCodeInput}
           highlightCityState={this.highlightCityState}
+          removeCityState={this.removeCityState}
         />
       </div>
     );

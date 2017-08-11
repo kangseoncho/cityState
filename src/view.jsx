@@ -6,11 +6,14 @@ const View = (props) => {
     let cssClass = Object.keys(zipCodeObj)[1];
 
     return (
-      <div key={index}
-        onClick={() => props.highlightCityState(zipCode)}
-        className={zipCodeObj[cssClass]}
-        >
-        {zipCodeObj[Object.keys(zipCodeObj)[0]]}
+      <div key={index}>
+        <div
+          onClick={() => props.highlightCityState(zipCode)}
+          className={zipCodeObj[cssClass]}>
+          {zipCodeObj[Object.keys(zipCodeObj)[0]]}
+        </div>
+
+        <div onClick={() => props.removeCityState(zipCode)}>X</div>
       </div>
     )
   })
@@ -29,8 +32,9 @@ const View = (props) => {
           type='submit'
           onClick={() => {
             props.addZipCodeToList(props.zipCodeInput);
-            props.highlightCityState(props.zipCodeinput)}
-        }>
+            props.highlightCityState(props.zipCodeinput)
+          }
+          }>
           enter zipcode
         </button>
       </div>
