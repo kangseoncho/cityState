@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import getZipCodeData from './getZipCodeData.js';
+import ZipCodeData from './zipCodeData.js';
 import View from './view.jsx';
 
 /**
@@ -71,7 +71,7 @@ class App extends Component {
 
   //add the newly created object for zipCodeList into the zipCodeList state
   addZipCodeToList(zipCode) {
-    getZipCodeData(zipCode)
+    getZipCodeData.get(zipCode)
       .then(res => {
         return this.changeDataForZipCodeList(res);
       })
