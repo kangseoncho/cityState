@@ -6,7 +6,7 @@ const CityStateList = (props) => {
   return (
     <ul>
       {props.location.map(((location, index) => {
-        return <CityState key={index} {...props} location={location} zipcode={location[Object.keys(location)[0]]} index={index}/>
+        return <CityState key={index} {...props} location={location} cityState={location[Object.keys(location)[0]]} index={index}/>
         })
       )}
     </ul>

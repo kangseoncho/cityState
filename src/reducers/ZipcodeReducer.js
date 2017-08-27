@@ -4,20 +4,17 @@ const initialState = [
 ];
 
 const payloadToObject = (action) => {
-  // console.log('payloadCityState from object creator: ', action.payloadCityState)
-  const zipcode = action.payloadZipcode;
-  const cityState = action.payloadCityState;
-  const selected = action.payloadClass
-  return {
-    zipcode: cityState,
-    selected
-  }
+  const payload = {};
+  console.log(action.payloadZipcode)
+  payload[action.payloadZipcode] = action.payloadCityState;
+  payload['selected'] = action.payloadClass;
+
+  return payload;
 }
 
 const zipcodeReducer = (state = initialState, action) => {
   switch(action.type) {
     case 'FIND_CITYSTATE':
-      console.log('from FIND_CITYSTATE reducer: ', action.payloadCityState)
       return [...state, payloadToObject(action)];
 
     // case 'ENTER_ZIPCODE':

@@ -4,7 +4,7 @@ import React from 'react';
 const CityState = (props) => {
   return (
     <li>
-      {props.zipcode}
+      {props.cityState}
     </li>
   )
 }
