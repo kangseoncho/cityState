@@ -7,7 +7,15 @@ const CityStateList = (props) => {
     <ul>
       {props.location.map(((location, i) => {
         let cityState = location[Object.keys(location)[0]];
-        return <CityState key={i} {...props} location={location} cityState={cityState} index={i}/>
+        let zipcode = Object.keys(location)[0];
+        return <CityState
+                  key={i}
+                  index={i}
+                  {...props}
+                  location={location}
+                  zipcode={zipcode}
+                  cityState={cityState}
+                />
         })
       )}
     </ul>
