@@ -1,7 +1,11 @@
-const initialState = [
-  {90701:'Artesia, CA', selected: "notSelected"},
-  {91101:'Pasadena, CA', selected: "notSelected"}
-];
+
+// how a state should look with 2 entries.
+// const initialState = [
+//   {90701:'Artesia, CA', selected: "notSelected"},
+//   {91101:'Pasadena, CA', selected: "notSelected"}
+// ];
+
+const initialState = [];
 
 const newLocationObject = (action) => {
   const payload = {};
@@ -23,7 +27,6 @@ const filterExistingZipcode = (state, action) => {
 
   alert('Zipcode already present!');
   return state;
-
 }
 
 const changeSelectedClassName = (state, action) => {

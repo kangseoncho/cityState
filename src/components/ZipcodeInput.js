@@ -5,7 +5,6 @@ import { updateInputZipcode } from './../actions/InputFieldActions';
 
 const mapStateToProps = (state) => {
   return {
-    location: state.zipcode,
     inputField: state.inputField
   }
 }

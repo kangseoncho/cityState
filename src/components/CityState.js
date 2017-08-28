@@ -1,7 +1,6 @@
 import React from 'react';
 import { selection } from './../actions/ZipcodeActions';
 import { updateInputZipcode } from './../actions/InputFieldActions';
-//need onclick to trigger zipcode to pop up at input field
 
 const CityState = (props) => {
   return (
