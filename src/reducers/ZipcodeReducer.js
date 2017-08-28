@@ -3,9 +3,9 @@ const initialState = [
   {91101:'Pasadena, CA', selected: "notSelected"}
 ];
 
-const payloadToObject = (action) => {
+const newLocationObject = (action) => {
   const payload = {};
-  console.log(action.payloadZipcode)
+
   payload[action.payloadZipcode] = action.payloadCityState;
   payload['selected'] = action.payloadClass;
 
@@ -14,11 +14,25 @@ const payloadToObject = (action) => {
 
 const zipcodeReducer = (state = initialState, action) => {
   switch(action.type) {
-    case 'FIND_CITYSTATE':
-      return [...state, payloadToObject(action)];
+    case 'FIND_CITYSTATE_FULFILLED':
+      return state.map(location => {
+        if(location['selected'] === 'selected') location['selected'] = 'notSelected';
+        return location;
+      }).concat([newLocationObject(action)]);
 
-    // case 'ENTER_ZIPCODE':
-      // return [...state, action.payload];
+    case 'FIND_CITYSTATE_REJECTED':
+      return state;
+
+    case 'SELECT_LOCATION':
+      return state.map((location, index) => {
+        if(index === action.payloadIndex) {
+          if(location['selected'] === action.payload) location['selected'] = 'notSelected';
+          else location['selected'] = action.payload;
+        } else if (index !== action.payloadIndex) {
+          location['selected'] = 'notSelected'
+        }
+        return location;
+      })
 
     default:
       return state;
